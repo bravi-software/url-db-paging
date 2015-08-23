@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "babel --stage 0 -d lib/ src/",
     "prepublish": "npm run compile",
-    "test": "jshint src/ spec/ && NODE_ENV=test mocha --compilers js:./compiler --reporter spec ./spec/**/*.spec.js"
+    "test": "eslint src/ spec/ && NODE_ENV=test mocha --compilers js:./compiler --reporter spec ./spec/**/*.spec.js"
   },
   "author": "Bravi (http://www.bravi.com.br)",
   "contributors": [
@@ -30,8 +30,9 @@
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.21",
+    "babel-eslint": "^4.0.10",
     "chai": "^3.2.0",
-    "jshint": "^2.8.0",
+    "eslint": "^1.2.1",
     "mocha": "^2.2.5"
   }
 }
