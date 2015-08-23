@@ -1,7 +1,7 @@
 require('./spec-helper');
 
 var expect = require('chai').expect,
-    RestUtils = require('../').RestUtils;
+    RestUtils = require('../src').RestUtils;
 
 /* jshint -W030 */
 describe('Paging .addSelfLink', function() {

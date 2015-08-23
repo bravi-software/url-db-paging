@@ -3,7 +3,7 @@ require('./spec-helper');
 var expect = require('chai').expect,
     qs = require('querystring'),
     FakeQueryBuilder = require('./fake-query-builder'),
-    Paging = require('../');
+    Paging = require('../src');
 
 var data = require('./fixtures'),
     rootUrl = 'http://service/';

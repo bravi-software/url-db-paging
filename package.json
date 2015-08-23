@@ -2,9 +2,11 @@
   "name": "url-db-paging",
   "version": "1.0.0",
   "description": "A library to help create paging results.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "jshint lib/ spec/ && NODE_ENV=test mocha --reporter spec ./spec/**/*.spec.js"
+    "compile": "babel --stage 0 -d lib/ src/",
+    "prepublish": "npm run compile",
+    "test": "jshint src/ spec/ && NODE_ENV=test mocha --compilers js:./compiler --reporter spec ./spec/**/*.spec.js"
   },
   "author": "Bravi (http://www.bravi.com.br)",
   "contributors": [
@@ -27,8 +29,9 @@
   "bugs": "https://github.com/bravi-software/url-db-paging/issues",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^1.9.1",
-    "jshint": "^2.5.0",
-    "mocha": "^1.18.2"
+    "babel": "^5.8.21",
+    "chai": "^3.2.0",
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5"
   }
 }

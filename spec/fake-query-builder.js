@@ -41,9 +41,9 @@ function sortDesc (data, cb) {
 }
 
 /*
- * Monkey patch original behavior to allow test it without depend of any database
+ * Monkey patch original behavior to allow test it without depend on any database
  */
-var Sort = require('../lib/sort');
+var Sort = require('../src/sort');
 Sort.prototype.addPagingMongoQuery =
 Sort.prototype.addPagingSolrQuery = function(dbQuery) {
   var that = this;
