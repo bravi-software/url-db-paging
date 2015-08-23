@@ -1,0 +1,34 @@
+{
+  "name": "url-db-paging",
+  "version": "0.0.0",
+  "description": "A library to help create paging results.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jshint lib/ spec/ && NODE_ENV=test mocha --reporter spec ./spec/**/*.spec.js"
+  },
+  "author": "Bravi (http://www.bravi.com.br)",
+  "contributors": [
+    "Eduardo Nunes (https://github.com/esnunes)",
+    "Gabriel Siedler (https://github.com/gabrielsiedler)",
+    "Max Claus Nunes (https://github.com/maxcnunes)"
+  ],
+  "keywords": [
+    "paging",
+    "url",
+    "db",
+    "mongoose",
+    "solr",
+    "knex"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bravi-software/url-db-paging.git"
+  },
+  "bugs": "https://github.com/bravi-software/url-db-paging/issues",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "jshint": "^2.5.0",
+    "mocha": "^1.18.2"
+  }
+}
