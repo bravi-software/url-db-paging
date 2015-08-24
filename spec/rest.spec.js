@@ -1,15 +1,14 @@
-require('./spec-helper');
+/* eslint func-names:0 */
+import './spec-helper';
+import { expect } from 'chai';
+import { restUtils } from '../src';
 
-var expect = require('chai').expect,
-    RestUtils = require('../src').RestUtils;
-
-/* jshint -W030 */
 describe('Paging .addSelfLink', function() {
-  var item = {},
-      rootUrl = 'http://service/';
+  const item = {};
+  const rootUrl = 'http://service/';
 
   it('should add a self link', function() {
-    RestUtils.addSelfLink(item, '_id', rootUrl);
+    restUtils.addSelfLink(item, '_id', rootUrl);
     expect(item).to.have.property('_links');
   });
 });

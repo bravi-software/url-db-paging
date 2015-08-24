@@ -1,72 +1,78 @@
-var Sort = require('./sort');
+import Sort from './sort';
+import { datePaged, addSelfLink } from './rest';
 
-var Paging = module.exports = function (opt) {
-  this.rest = require('./rest');
-  this.sort = new Sort(opt);
-  this.opt = opt;
 
-  this.opt.sortFieldName = this.sort.sortFieldName;
+const VALID_DB_QUERY_TYPE = ['mongoose', 'solr', 'knex'];
 
-  if (this.opt.queryBuilderType) validateQueryBuilderType(this.opt.queryBuilderType);
-};
 
-var VALID_DB_QUERY_TYPE = ['mongoose', 'solr', 'knex'];
+export default class Paging {
+  constructor(opt) {
+    this.sort = new Sort(opt);
+    this.opt = opt;
 
-Paging.prototype.addSortDbQuery = function(queryBuilder, type) {
-  if (!type) type = this.opt.queryBuilderType;
-  validateQueryBuilderType(type);
+    this.opt.sortFieldName = this.sort.sortFieldName;
 
-  if (type === 'mongoose') this.sort.addPagingMongoQuery(queryBuilder);
-  if (type === 'solr') this.sort.addPagingSolrQuery(queryBuilder);
-  if (type === 'knex') this.sort.addPagingKnexQuery(queryBuilder);
-};
+    if (this.opt.queryBuilderType) validateQueryBuilderType(this.opt.queryBuilderType);
+  }
 
-Paging.prototype.buildPagingResult = function(data) {
-  if (!Array.isArray(data)) data = [];
 
-  this.opt.data = { list: data };
+  addSortDbQuery(queryBuilder, type) {
+    const queryBuilderType = type || this.opt.queryBuilderType;
+    validateQueryBuilderType(queryBuilderType);
 
-  if (!this.opt.data.list.length) return this.opt.data;
+    if (queryBuilderType === 'mongoose') this.sort.addPagingMongoQuery(queryBuilder);
+    if (queryBuilderType === 'solr') this.sort.addPagingSolrQuery(queryBuilder);
+    if (queryBuilderType === 'knex') this.sort.addPagingKnexQuery(queryBuilder);
+  }
 
-  if (!this.sort.isForwardPagging) this.opt.data.list.reverse();
-  this.rest.datePaged(this.opt);
 
-  return this.opt.data;
-};
+  buildPagingResult(data) {
+    const dataResult = Array.isArray(data) ? data : [];
 
-Paging.prototype.getSortQuery = function(type, primaryField) {
-  if (!type) type = this.opt.queryBuilderType;
-  validateQueryBuilderType(type);
+    this.opt.data = { list: dataResult };
 
-  if (type === 'mongoose') return this.sort.getSortMongoQuery(primaryField);
-  if (type === 'solr') return this.sort.getSortSolrQuery(primaryField);
-  if (type === 'knex') return this.sort.getSortKnexQuery(primaryField);
-};
+    if (!this.opt.data.list.length) return this.opt.data;
 
-Paging.prototype.getLimitQuery = function() {
-  // use limit + 1 due paging
-  return this.opt.limit + 1;
-};
+    if (!this.sort.isForwardPagging) this.opt.data.list.reverse();
+    datePaged(this.opt);
 
-function validateQueryBuilderType (type) {
-  if (!~VALID_DB_QUERY_TYPE.indexOf(type)) throw new Error('Invalid query builder type.');
+    return this.opt.data;
+  }
+
+
+  getSortQuery(type, primaryField) {
+    const queryBuilderType = type || this.opt.queryBuilderType;
+    validateQueryBuilderType(queryBuilderType);
+
+    if (queryBuilderType === 'mongoose') return this.sort.getSortMongoQuery(primaryField);
+    if (queryBuilderType === 'solr') return this.sort.getSortSolrQuery(primaryField);
+    if (queryBuilderType === 'knex') return this.sort.getSortKnexQuery(primaryField);
+  }
+
+
+  getLimitQuery() {
+    // use limit + 1 due paging
+    return this.opt.limit + 1;
+  }
+
+
+  addSelfLink(data, id, root) {
+    const _id = id || this.opt.idField;
+    const _root = root || this.opt.root;
+
+    addSelfLink(data, _id, _root);
+  }
+
+
+  addSelfLinkInAllItems(data, id, root) {
+    const _id = id || this.opt.idField;
+    const _root = root || this.opt.root;
+
+    data.list.forEach(item => addSelfLink(item, _id, _root));
+  }
 }
 
-Paging.RestUtils = require('./rest');
 
-Paging.prototype.addSelfLink = function(data, id, root) {
-  if (!id) id = this.opt.idField;
-  if (!root) root = this.opt.root;
-
-  this.rest.addSelfLink(data, id, root);
-};
-
-Paging.prototype.addSelfLinkInAllItems = function(data, id, root) {
-  var that = this;
-  if (!id) id = this.opt.idField;
-  if (!root) root = this.opt.root;
-
-  data.list.forEach(function (item) {
-    that.rest.addSelfLink(item, id, root);
-  });
-};
+function validateQueryBuilderType(type) {
+  if (!~VALID_DB_QUERY_TYPE.indexOf(type)) throw new Error(`Invalid query builder type: ${type}.`);
+}

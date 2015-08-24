@@ -1,10 +1,6 @@
+/* eslint func-names:0 */
 process.env.TZ = 'Brazil/East';
 
-beforeEach(function () {
+beforeEach(function() {
   // setup custom matchers and global spec setup
-});
-
-
-process.on('uncaughtException',function(e) {
-  console.log(e.stack);
 });

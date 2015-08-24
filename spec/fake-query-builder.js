@@ -1,41 +1,44 @@
+import Sort from '../src/sort';
 
-var FakeQueryBuilder = module.exports = function (data) {
-  this.data = data;
-  this.isAscQuerySort = true;
-};
 
-FakeQueryBuilder.prototype.search = function (limit) {
-  var that = this,
-      result = [];
+export default class FakeQueryBuilder {
+  constructor(data) {
+    this.data = data;
+    this.isAscQuerySort = true;
+  }
 
-  var sortData = that.isAscQuerySort ? sortAsc : sortDesc;
-  sortData(that.data, function (item) {
-    if (result.length < limit && that.where(item)) result.push(item);
-  });
+  search(limit) {
+    const result = [];
+    const  sortData = this.isAscQuerySort ? sortAsc : sortDesc;
 
-  return result;
-};
+    sortData(this.data, item => {
+      if (result.length < limit && this.where(item)) result.push(item);
+    });
 
-FakeQueryBuilder.prototype.setQuery = function (query) {
-  this.where = query;
-};
+    return result;
+  }
 
-FakeQueryBuilder.prototype.setSort = function (isAsc) {
-  this.isAscQuerySort = isAsc;
-};
+  setQuery(query) {
+    this.where = query;
+  }
 
-FakeQueryBuilder.prototype.where = function () {
-  return true;
-};
+  setSort(isAsc) {
+    this.isAscQuerySort = isAsc;
+  }
 
-function sortAsc (data, cb) {
-  for (var i = 0; i < data.length; i++) {
+  where() {
+    return true;
+  }
+}
+
+function sortAsc(data, cb) {
+  for (let i = 0; i < data.length; i++) {
     cb(data[i]);
   }
 }
 
-function sortDesc (data, cb) {
-  for (var i = data.length-1; i >= 0; i--) {
+function sortDesc(data, cb) {
+  for (let i = data.length - 1; i >= 0; i--) {
     cb(data[i]);
   }
 }
@@ -43,20 +46,20 @@ function sortDesc (data, cb) {
 /*
  * Monkey patch original behavior to allow test it without depend on any database
  */
-var Sort = require('../src/sort');
 Sort.prototype.addPagingMongoQuery =
-Sort.prototype.addPagingSolrQuery = function(dbQuery) {
-  var that = this;
-  if (!that.hasParametersToFilter()) return;
-  dbQuery.setSort(that.isAscQuerySort);
-  dbQuery.setQuery(function (item) {
-    if (item._id === parseInt(that.query.offset_id)) return false;
-    if (that.isAscQuerySort) {
-      if (item[that.sortFieldName] > new Date(that.query.offset_date)) return true;
-      if (item[that.sortFieldName] === new Date(that.query.offset_date) && item._id > parseInt(that.query.offset_id)) return true;
+Sort.prototype.addPagingSolrQuery = function onPaging(dbQuery) {
+  if (!this.hasParametersToFilter()) return;
+
+  dbQuery.setSort(this.isAscQuerySort);
+
+  dbQuery.setQuery(item => {
+    if (item._id === parseInt(this.query.offset_id, 10)) return false;
+    if (this.isAscQuerySort) {
+      if (item[this.sortFieldName] > new Date(this.query.offset_date)) return true;
+      if (item[this.sortFieldName] === new Date(this.query.offset_date) && item._id > parseInt(this.query.offset_id, 10)) return true;
     } else {
-      if (item[that.sortFieldName] < new Date(that.query.offset_date)) return true;
-      if (item[that.sortFieldName] === new Date(that.query.offset_date) && item._id < parseInt(that.query.offset_id)) return true;
+      if (item[this.sortFieldName] < new Date(this.query.offset_date)) return true;
+      if (item[this.sortFieldName] === new Date(this.query.offset_date) && item._id < parseInt(this.query.offset_id, 10)) return true;
     }
   });
 };

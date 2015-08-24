@@ -1,38 +1,39 @@
-require('./spec-helper');
+/* eslint func-names:0 */
+import './spec-helper';
+import { expect } from 'chai';
+import qs from 'querystring';
+import FakeQueryBuilder from './fake-query-builder';
+import Paging from '../src';
+import data from './fixtures';
 
-var expect = require('chai').expect,
-    qs = require('querystring'),
-    FakeQueryBuilder = require('./fake-query-builder'),
-    Paging = require('../src');
 
-var data = require('./fixtures'),
-    rootUrl = 'http://service/';
+const rootUrl = 'http://service/';
 
-function getResultPagingWithFakeDbQuery (query) {
-  var queryBuilder = new FakeQueryBuilder(data);
 
-  var paging = new Paging({
+function getResultPagingWithFakeDbQuery(query) {
+  const queryBuilder = new FakeQueryBuilder(data);
+
+  const paging = new Paging({
     query: query,
     defaultSortField: 'publishedAt',
     idField: '_id',
     root: rootUrl,
     limit: parseInt(query.limit, 10) || 10,
-    queryBuilderType: 'mongoose'
+    queryBuilderType: 'mongoose',
   });
 
   paging.addSortDbQuery(queryBuilder);
 
-  var dbResult = queryBuilder.search(paging.getLimitQuery());
+  const dbResult = queryBuilder.search(paging.getLimitQuery());
   return paging.buildPagingResult(dbResult);
 }
-/* jshint -W030 */
-describe('Paging .buildPagingResult', function() {
 
-  describe('limit is 20 and there are 50 items in the database', function () {
-    describe('going forward', function () {
-      describe('first page', function () {
-        var result = [];
-        beforeEach(function () {
+describe('Paging .buildPagingResult', function() {
+  describe('limit is 20 and there are 50 items in the database', function() {
+    describe('going forward', function() {
+      describe('first page', function() {
+        let result = [];
+        beforeEach(function() {
           result = getResultPagingWithFakeDbQuery({ limit: 20 });
         });
 
@@ -57,9 +58,9 @@ describe('Paging .buildPagingResult', function() {
         });
       });
 
-      describe('second page', function () {
-        var result = [];
-        beforeEach(function () {
+      describe('second page', function() {
+        let result = [];
+        beforeEach(function() {
           result = getResultPagingWithFakeDbQuery(qs.parse('limit=20&offset_date=2000-03-01T04%3A01%3A20.000Z&offset_id=20&dir=forward'));
         });
 
@@ -84,9 +85,9 @@ describe('Paging .buildPagingResult', function() {
         });
       });
 
-      describe('third page', function () {
-        var result = [];
-        beforeEach(function () {
+      describe('third page', function() {
+        let result = [];
+        beforeEach(function() {
           result = getResultPagingWithFakeDbQuery(qs.parse('limit=20&offset_date=2000-03-01T04%3A01%3A40.000Z&offset_id=40&dir=forward'));
         });
 
@@ -112,10 +113,10 @@ describe('Paging .buildPagingResult', function() {
       });
     });
 
-    describe('going backward', function () {
-      describe('second page', function () {
-        var result = [];
-        beforeEach(function () {
+    describe('going backward', function() {
+      describe('second page', function() {
+        let result = [];
+        beforeEach(function() {
           result = getResultPagingWithFakeDbQuery(qs.parse('limit=20&offset_date=2000-03-01T04%3A01%3A41.000Z&offset_id=41&dir=backward'));
         });
 
@@ -140,9 +141,9 @@ describe('Paging .buildPagingResult', function() {
         });
       });
 
-      describe('first page', function () {
-        var result = [];
-        beforeEach(function () {
+      describe('first page', function() {
+        let result = [];
+        beforeEach(function() {
           result = getResultPagingWithFakeDbQuery(qs.parse('limit=20&offset_date=2000-03-01T04%3A01%3A21.000Z&offset_id=21&dir=backward'));
         });
 
@@ -172,22 +173,22 @@ describe('Paging .buildPagingResult', function() {
 
 /* jshint -W030 */
 describe('Paging with Mongoose', function() {
-  var paging,
-      query = { limit: 20 };
+  let paging;
+  const query = { limit: 20 };
 
-  beforeEach(function () {
+  beforeEach(function() {
     paging = new Paging({
       query: query,
       defaultSortField: '-publishedAt',
       idField: '_id',
       root: rootUrl,
       limit: parseInt(query.limit, 10) || 10,
-      queryBuilderType: 'mongoose'
+      queryBuilderType: 'mongoose',
     });
   });
 
   it('limit should be the value passed by querystring + 1', function() {
-    expect(paging.getLimitQuery()).to.equal(20+1);
+    expect(paging.getLimitQuery()).to.equal(20 + 1);
   });
 
   describe('.getSortQuery', function() {
@@ -210,22 +211,22 @@ describe('Paging with Mongoose', function() {
 });
 
 describe('Paging with Solr', function() {
-  var paging,
-      query = { limit: 20 };
+  let paging;
+  const query = { limit: 20 };
 
-  beforeEach(function () {
+  beforeEach(function() {
     paging = new Paging({
       query: query,
       defaultSortField: '-publishedAt',
       idField: '_id',
       root: rootUrl,
       limit: parseInt(query.limit, 10) || 10,
-      queryBuilderType: 'solr'
+      queryBuilderType: 'solr',
     });
   });
 
   it('limit should be the value passed by querystring + 1', function() {
-    expect(paging.getLimitQuery()).to.equal(20+1);
+    expect(paging.getLimitQuery()).to.equal(20 + 1);
   });
 
   describe('.getSortQuery', function() {
@@ -245,26 +246,25 @@ describe('Paging with Solr', function() {
       });
     });
   });
-
 });
 
 describe('Paging with Knex', function() {
-  var paging,
-      query = { limit: 20 };
+  let paging;
+  const query = { limit: 20 };
 
-  beforeEach(function () {
+  beforeEach(function() {
     paging = new Paging({
       query: query,
       defaultSortField: '-publishedAt',
       idField: 'id',
       root: rootUrl,
       limit: parseInt(query.limit, 10) || 10,
-      queryBuilderType: 'knex'
+      queryBuilderType: 'knex',
     });
   });
 
   it('limit should be the value passed by querystring + 1', function() {
-    expect(paging.getLimitQuery()).to.equal(20+1);
+    expect(paging.getLimitQuery()).to.equal(20 + 1);
   });
 
   describe('.getSortQuery', function() {
@@ -284,5 +284,4 @@ describe('Paging with Knex', function() {
       });
     });
   });
-
 });

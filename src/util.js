@@ -1,29 +1,13 @@
-exports.clone = function(source) {
-  var dest = {};
+export function getPropertyValue(propName, item) {
+  const names = propName.split('.');
+  let obj = item;
 
-  if (!source || typeof source !== 'object') return dest;
-
-  var keys = Object.keys(source);
-  for (var i = 0; i < keys.length; i++) {
-    dest[keys[i]] = source[keys[i]];
-  }
-
-  return dest;
-};
-
-
-exports.getPropertyValue = function (propName, item) {
-  var names = propName.split('.'),
-      obj = item;
-
-  names.forEach(function (name) {
-    obj = obj[name];
-  });
+  names.forEach(name => obj = obj[name]);
 
   return obj;
-};
+}
 
 
-exports.isDate = function (date) {
+export function isDate(date) {
   return typeof date.getMonth === 'function';
-};
+}
