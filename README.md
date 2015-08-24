@@ -3,14 +3,14 @@
 [![Build Status](https://travis-ci.org/bravi-software/url-db-paging.svg?branch=master)](https://travis-ci.org/bravi-software/url-db-paging)
 [![npm version](https://badge.fury.io/js/url-db-paging.svg)](http://badge.fury.io/js/url-db-paging)
 
-A library to help creating paging results.
+A library to help creating paging results through URLs.
 
 ## Features
 
-- Build a paging query database based in the given url. Which will use an offset search due performance reasons.
+- Build a paging query with a search provider based in some URL. Which will use offset fields due performance reasons.
 - Build REST JSON output with link to the next and previous pages.
 
-## Support for these search providers
+## Search providers
 
 - [MongoDB](https://www.mongodb.org/) through [Mongoose](http://mongoosejs.com/)
 - [MySQL](https://www.mysql.com/) and [PostgreSQL](http://www.postgresql.org/) through [Knex](http://knexjs.org/)

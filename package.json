@@ -1,7 +1,7 @@
 {
   "name": "url-db-paging",
   "version": "1.0.0",
-  "description": "A library to help create paging results.",
+  "description": "A library to help creating paging results through URLs",
   "main": "lib/index.js",
   "scripts": {
     "compile": "babel --stage 0 -d lib/ src/",
