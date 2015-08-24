@@ -7,7 +7,7 @@ A library to help creating paging results.
 
 ## Features
 
-- Build a paging query database based in the given url. Which will use a offset search due performance reasons.
+- Build a paging query database based in the given url. Which will use an offset search due performance reasons.
 - Build REST JSON output with link to the next and previous pages.
 
 ## Support for these search providers
