@@ -1,5 +1,8 @@
 # url-db-paging
 
+[![Build Status](https://travis-ci.org/bravi-software/url-db-paging.svg?branch=master)](https://travis-ci.org/bravi-software/url-db-paging)
+[![npm version](https://badge.fury.io/js/url-db-paging.svg)](http://badge.fury.io/js/url-db-paging)
+
 A library to help creating paging results.
 
 ## Features
