@@ -192,20 +192,8 @@ describe('Paging with Mongoose', function() {
   });
 
   describe('.getSortQuery', function() {
-    describe('no type is specified', function() {
-      it('should be based on paging query type', function() {
-        expect(paging.getSortQuery()).to.equal('-publishedAt -_id');
-      });
-    });
-    describe('type specified is mongoose', function() {
-      it('should be based on mongoose query builder type', function() {
-        expect(paging.getSortQuery('mongoose')).to.equal('-publishedAt -_id');
-      });
-    });
-    describe('type specified is solr', function() {
-      it('should be based on solr query builder type', function() {
-        expect(paging.getSortQuery('solr')).to.equal('publishedAt desc, _id desc');
-      });
+    it('should return the valid sort quey for this provider', function() {
+      expect(paging.getSortQuery()).to.equal('-publishedAt -_id');
     });
   });
 });
@@ -230,20 +218,8 @@ describe('Paging with Solr', function() {
   });
 
   describe('.getSortQuery', function() {
-    describe('no type is specified', function() {
-      it('should be based on paging query type', function() {
-        expect(paging.getSortQuery()).to.equal('publishedAt desc, _id desc');
-      });
-    });
-    describe('type specified is mongoose', function() {
-      it('should be based on mongoose query builder type', function() {
-        expect(paging.getSortQuery('mongoose')).to.equal('-publishedAt -_id');
-      });
-    });
-    describe('type specified is solr', function() {
-      it('should be based on solr query builder type', function() {
-        expect(paging.getSortQuery('solr')).to.equal('publishedAt desc, _id desc');
-      });
+    it('should return the valid sort quey for this provider', function() {
+      expect(paging.getSortQuery()).to.equal('publishedAt desc, _id desc');
     });
   });
 });
@@ -268,20 +244,8 @@ describe('Paging with Knex', function() {
   });
 
   describe('.getSortQuery', function() {
-    describe('no type is specified', function() {
-      it('should be based on paging query type', function() {
-        expect(paging.getSortQuery()).to.equal('publishedAt desc, id desc');
-      });
-    });
-    describe('type specified is mongoose', function() {
-      it('should be based on mongoose query builder type', function() {
-        expect(paging.getSortQuery('mongoose')).to.equal('-publishedAt -id');
-      });
-    });
-    describe('type specified is knex', function() {
-      it('should be based on knex query builder type', function() {
-        expect(paging.getSortQuery('knex')).to.equal('publishedAt desc, id desc');
-      });
+    it('should return the valid sort quey for this provider', function() {
+      expect(paging.getSortQuery()).to.equal('publishedAt desc, id desc');
     });
   });
 });

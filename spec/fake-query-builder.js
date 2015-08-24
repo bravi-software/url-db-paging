@@ -1,4 +1,4 @@
-import Sort from '../src/sort';
+import searchProviders from '../src/search-providers';
 
 
 export default class FakeQueryBuilder {
@@ -46,8 +46,10 @@ function sortDesc(data, cb) {
 /*
  * Monkey patch original behavior to allow test it without depend on any database
  */
-Sort.prototype.addPagingMongoQuery =
-Sort.prototype.addPagingSolrQuery = function onPaging(dbQuery) {
+searchProviders.mongoose.prototype.addPagingQuery =
+searchProviders.knex.prototype.addPagingQuery =
+searchProviders.solr.prototype.addPagingQuery =
+function onPaging(dbQuery) {
   if (!this.hasParametersToFilter()) return;
 
   dbQuery.setSort(this.isAscQuerySort);

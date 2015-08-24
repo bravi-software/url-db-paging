@@ -1,28 +1,23 @@
-import Sort from './sort';
 import { datePaged, addSelfLink } from './rest';
-
-
-const VALID_DB_QUERY_TYPE = ['mongoose', 'solr', 'knex'];
+import searchProviders from './search-providers';
 
 
 export default class Paging {
   constructor(opt) {
-    this.sort = new Sort(opt);
     this.opt = opt;
 
-    this.opt.sortFieldName = this.sort.sortFieldName;
+    const SearchProvider = searchProviders[opt.queryBuilderType];
+    if (!SearchProvider) {
+      throw new Error(`Invalid query builder type: ${opt.queryBuilderType}.`);
+    }
+    this.searchProvider = new SearchProvider(opt);
 
-    if (this.opt.queryBuilderType) validateQueryBuilderType(this.opt.queryBuilderType);
+    this.opt.sortFieldName = this.searchProvider.sortFieldName;
   }
 
 
-  addSortDbQuery(queryBuilder, type) {
-    const queryBuilderType = type || this.opt.queryBuilderType;
-    validateQueryBuilderType(queryBuilderType);
-
-    if (queryBuilderType === 'mongoose') this.sort.addPagingMongoQuery(queryBuilder);
-    if (queryBuilderType === 'solr') this.sort.addPagingSolrQuery(queryBuilder);
-    if (queryBuilderType === 'knex') this.sort.addPagingKnexQuery(queryBuilder);
+  addSortDbQuery(queryBuilder) {
+    this.searchProvider.addPagingQuery(queryBuilder);
   }
 
 
@@ -33,20 +28,15 @@ export default class Paging {
 
     if (!this.opt.data.list.length) return this.opt.data;
 
-    if (!this.sort.isForwardPagging) this.opt.data.list.reverse();
+    if (!this.searchProvider.isForwardPagging) this.opt.data.list.reverse();
     datePaged(this.opt);
 
     return this.opt.data;
   }
 
 
-  getSortQuery(type, primaryField) {
-    const queryBuilderType = type || this.opt.queryBuilderType;
-    validateQueryBuilderType(queryBuilderType);
-
-    if (queryBuilderType === 'mongoose') return this.sort.getSortMongoQuery(primaryField);
-    if (queryBuilderType === 'solr') return this.sort.getSortSolrQuery(primaryField);
-    if (queryBuilderType === 'knex') return this.sort.getSortKnexQuery(primaryField);
+  getSortQuery(primaryField) {
+    return this.searchProvider.getSortQuery(primaryField);
   }
 
 
@@ -70,9 +60,4 @@ export default class Paging {
 
     data.list.forEach(item => addSelfLink(item, _id, _root));
   }
-}
-
-
-function validateQueryBuilderType(type) {
-  if (!~VALID_DB_QUERY_TYPE.indexOf(type)) throw new Error(`Invalid query builder type: ${type}.`);
 }

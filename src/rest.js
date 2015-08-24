@@ -1,10 +1,6 @@
 import qs from 'querystring';
 import { getPropertyValue, isDate } from './util';
-
-const DIRECTION = {
-  FORWARD: 'forward',
-  BACKWARD: 'backward',
-};
+import { DIRECTION } from './search-providers/search-provider';
 
 
 export function datePaged(opt) {
