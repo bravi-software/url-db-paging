@@ -12,9 +12,9 @@ A library to help creating paging results.
 
 ## Support for these search providers
 
-- [Mongoose](http://mongoosejs.com/)
-- [Solr](http://lucene.apache.org/solr/)
-- [Knex](http://knexjs.org/)
+- [MongoDB](https://www.mongodb.org/) through [Mongoose](http://mongoosejs.com/)
+- [MySQL](https://www.mysql.com/) and [PostgreSQL](http://www.postgresql.org/) through [Knex](http://knexjs.org/)
+- [Solr](http://lucene.apache.org/solr/) through [solr-query-builder](https://github.com/maxcnunes/solr-query-builder)
 
 *Do you want another provider? Please open an issue or even better send us a pull request.*
 
