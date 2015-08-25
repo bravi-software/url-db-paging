@@ -270,7 +270,10 @@ describe('Paging with Knex', function() {
   describe('.getSortQuery', function() {
     describe('no type is specified', function() {
       it('should be based on paging query type', function() {
-        expect(paging.getSortQuery()).to.equal('publishedAt desc, id desc');
+        expect(paging.getSortQuery()).to.eql([
+          [ 'publishedAt', 'desc' ],
+          [ 'id', 'desc' ]
+        ]);
       });
     });
     describe('type specified is mongoose', function() {
@@ -280,7 +283,10 @@ describe('Paging with Knex', function() {
     });
     describe('type specified is knex', function() {
       it('should be based on knex query builder type', function() {
-        expect(paging.getSortQuery('knex')).to.equal('publishedAt desc, id desc');
+        expect(paging.getSortQuery('knex')).to.eql([
+          [ 'publishedAt', 'desc' ],
+          [ 'id', 'desc' ]
+        ]);
       });
     });
   });
