@@ -1,6 +1,6 @@
 {
   "name": "url-db-paging",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library to help creating paging results through URLs",
   "main": "lib/index.js",
   "scripts": {
