@@ -12,24 +12,23 @@ export default class KnexSearchProvider extends SearchProvider {
   }
 
   addPagingQuery(knex) {
-    if (!this.hasParametersToFilter()) return;
-    const that = this;
-
-    if (this.isAscQuerySort) {
-      knex
-        .where(this.sortFieldName, '>', this.offsetPrimaryField)
-        .orWhere(function where() {
-          this.where(that.sortFieldName, that.offsetPrimaryField)
-              .where(that.idField, '>', that.query.offset_id);
-        });
-    } else {
-      knex
-        .where(this.sortFieldName, '<', this.offsetPrimaryField)
-        .orWhere(function where() {
-          this.where(that.sortFieldName, that.offsetPrimaryField)
-              .where(that.idField, '<', that.query.offset_id);
-        });
+    if (!this.hasParametersToFilter()) {
+      return;
     }
-    knex.where(this.idField, '<>', this.query.offset_id);
+
+    const that = this;
+    let operator = '>';
+
+    if (!this.isAscQuerySort) {
+      operator = '<';
+    }
+
+    knex
+      .where(this.sortFieldName, operator, this.offsetPrimaryField)
+      .orWhere(function where() {
+        this.where(that.sortFieldName, that.offsetPrimaryField)
+            .where(that.idField, operator, that.query.offset_id);
+      })
+      .where(this.idField, '<>', this.query.offset_id);
   }
 }
