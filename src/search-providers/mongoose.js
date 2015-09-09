@@ -6,9 +6,10 @@ export default class MongooseSearchProvider extends SearchProvider {
   }
 
   getSortQuery(primaryField) {
-    const field = primaryField || this.sortFieldName;
+    const field = primaryField || this.sortFieldColumn;
     const sortDirection = this.isAscQuerySort ? '' : '-';
-    return `${sortDirection}${field} ${sortDirection}${this.idField}`;
+
+    return `${sortDirection}${field} ${sortDirection}${this.idFieldColumn}`;
   }
 
   addPagingQuery(dbQuery) {
@@ -39,7 +40,7 @@ export default class MongooseSearchProvider extends SearchProvider {
       ];
     }
 
-    sortFilter[this.idField] = { $ne: this.query.offset_id };
+    sortFilter[this.idFieldColumn] = { $ne: this.query.offset_id };
 
     return sortFilter;
   }
@@ -50,9 +51,9 @@ export default class MongooseSearchProvider extends SearchProvider {
     const andId = {};
 
     if (this.isAscQuerySort) {
-      andId[this.idField] = { $gt: this.query.offset_id };
+      andId[this.idFieldColumn] = { $gt: this.query.offset_id };
     } else {
-      andId[this.idField] = { $lt: this.query.offset_id };
+      andId[this.idFieldColumn] = { $lt: this.query.offset_id };
     }
 
     return { $and: [ equalOffsetDate, andId ] };
@@ -61,19 +62,19 @@ export default class MongooseSearchProvider extends SearchProvider {
 
   _getQueryEqualOffset() {
     const query = {};
-    query[this.sortFieldName] = this.offsetPrimaryField;
+    query[this.sortFieldColumn] = this.offsetPrimaryField;
     return query;
   }
 
   _getQueryGreaterThanOffset() {
     const query = {};
-    query[this.sortFieldName] = { $gt: this.offsetPrimaryField };
+    query[this.sortFieldColumn] = { $gt: this.offsetPrimaryField };
     return query;
   }
 
   _getQueryLessThanOffset() {
     const query = {};
-    query[this.sortFieldName] = { $lt: this.offsetPrimaryField };
+    query[this.sortFieldColumn] = { $lt: this.offsetPrimaryField };
     return query;
   }
 }

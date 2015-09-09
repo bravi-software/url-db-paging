@@ -6,9 +6,9 @@ export default class SolrSearchProvider extends SearchProvider {
   }
 
   getSortQuery(primaryField) {
-    const field = primaryField || this.sortFieldName;
+    const field = primaryField || this.sortFieldColumn;
     const sortDirection = this.isAscQuerySort ? 'asc' : 'desc';
-    return `${field} ${sortDirection}, ${this.idField} ${sortDirection}`;
+    return `${field} ${sortDirection}, ${this.idFieldColumn} ${sortDirection}`;
   }
 
   addPagingQuery(solrQuery) {
@@ -17,24 +17,24 @@ export default class SolrSearchProvider extends SearchProvider {
     if (this.isAscQuerySort) {
       solrQuery
         .begin()
-          .where(this.sortFieldName).gt(this.offsetPrimaryField)
+          .where(this.sortFieldColumn).gt(this.offsetPrimaryField)
           .or()
           .begin()
-            .where(this.sortFieldName).equals(this.offsetPrimaryField)
-            .where(this.idField).gt(this.query.offset_id)
+            .where(this.sortFieldColumn).equals(this.offsetPrimaryField)
+            .where(this.idFieldColumn).gt(this.query.offset_id)
           .end()
         .end();
     } else {
       solrQuery
         .begin()
-          .where(this.sortFieldName).lt(this.offsetPrimaryField)
+          .where(this.sortFieldColumn).lt(this.offsetPrimaryField)
           .or()
           .begin()
-            .where(this.sortFieldName).equals(this.offsetPrimaryField)
-            .where(this.idField).lt(this.query.offset_id)
+            .where(this.sortFieldColumn).equals(this.offsetPrimaryField)
+            .where(this.idFieldColumn).lt(this.query.offset_id)
           .end()
         .end();
     }
-    solrQuery.where(this.idField, this.query.offset_id, { not: true });
+    solrQuery.where(this.idFieldColumn, this.query.offset_id, { not: true });
   }
 }

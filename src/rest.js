@@ -1,5 +1,4 @@
 import qs from 'querystring';
-import { getPropertyValue, isDate } from './util';
 import { DIRECTION } from './search-providers/search-provider';
 
 
@@ -41,6 +40,7 @@ function buildLink(opt, direction) {
   if (!opt.data._links) opt.data._links = {};
 
   const offset = getPropertyValue(opt.sortFieldName, item);
+
   if (offset) {
     if (isDate(offset)) q.offset_date = offset.toISOString();
     else q.offset_sort = offset.toString();
@@ -59,4 +59,22 @@ export function addSelfLink(data, id, root) {
   data._links = data._links || {};
 
   data._links.self = { href: root + '/' + data[id] };
+}
+
+function getPropertyValue(propName, item) {
+  if (propName.column && propName.json) {
+    return item[propName.json];
+  }
+
+  const names = propName.split('.');
+  let obj = item;
+
+  names.forEach(name => obj = obj[name]);
+
+  return obj;
+}
+
+
+function isDate(date) {
+  return typeof date.getMonth === 'function';
 }

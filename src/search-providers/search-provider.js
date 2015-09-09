@@ -5,16 +5,18 @@ export const DIRECTION = {
   BACKWARD: 'backward',
 };
 
-export default class Sort {
+export default class SearchProvider {
   constructor(opt) {
     this.query = opt.query;
     this.sortField = opt.query.sort || opt.defaultSortField;
-    this.isSortDesc = /^-/.test(this.sortField);
+    this.sortFieldName = this.sortField.column || this.sortField;
+    this.isSortDesc = /^-/.test(this.sortFieldName);
     this.isForwardPagging = opt.query.dir !== DIRECTION.BACKWARD;
     this.isAscQuerySort = (!this.isSortDesc && this.isForwardPagging) || (this.isSortDesc && !this.isForwardPagging);
-    this.sortFieldName = this.sortField.replace(/^-/, '');
+    this.sortFieldColumn = this.sortFieldName.replace(/^-/, '');
     this.offsetPrimaryField = getOffsetValue(this.query);
     this.idField = opt.idField;
+    this.idFieldColumn = opt.idField.column || opt.idField;
   }
 
   hasParametersToFilter() {
@@ -24,6 +26,7 @@ export default class Sort {
   /* required public API to all providers */
   addPagingQuery() {}
   getSortQuery() {}
+
 }
 
 
