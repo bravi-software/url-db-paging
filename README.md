@@ -44,7 +44,19 @@ app.get('/', function(req, res, next){
   var paging = new Paging({
     query: req.query,               // query string
     defaultSortField: '-created',   // default sort field
+    defaultSortField: {column: '-created', json: 'createdAt'}, // define the column to sort and the JSON value of createdAt
     idField: '_id',                 // data's id field
+    idField: {column: '_id', json: 'id'}, // define the id column in database and
+    root: 'http://service/users',   // base url
+    limit: limit,                   // limit per page
+    queryBuilderType: 'mongoose'    // query builder type
+  });
+
+  //OR: When your JSON data it's different than the column/property in yours database you can define those changes like:
+  var paging = new Paging({
+    query: req.query,               // query string
+    defaultSortField: {column: '-created', json: 'createdAt'} // define the column to sort and the JSON value of createdAt
+    idField: {column: '_id', json: 'id'} // define the id column in database and
     root: 'http://service/users',   // base url
     limit: limit,                   // limit per page
     queryBuilderType: 'mongoose'    // query builder type
