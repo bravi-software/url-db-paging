@@ -10,9 +10,13 @@ export default class Paging {
     if (!SearchProvider) {
       throw new Error(`Invalid query builder type: ${opt.queryBuilderType}.`);
     }
-    this.searchProvider = new SearchProvider(opt);
 
+    this.searchProvider = new SearchProvider(opt);
     this.opt.sortFieldName = this.searchProvider.sortFieldName;
+
+    if (opt.defaultSortField && opt.defaultSortField.json) {
+      this.opt.sortFieldName = opt.defaultSortField.json;
+    }
   }
 
 
@@ -29,6 +33,7 @@ export default class Paging {
     if (!this.opt.data.list.length) return this.opt.data;
 
     if (!this.searchProvider.isForwardPagging) this.opt.data.list.reverse();
+    console.log(this.opt);
     datePaged(this.opt);
 
     return this.opt.data;

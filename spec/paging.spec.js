@@ -245,7 +245,10 @@ describe('Paging with Knex', function() {
 
   describe('.getSortQuery', function() {
     it('should return the valid sort quey for this provider', function() {
-      expect(paging.getSortQuery()).to.equal('publishedAt desc, id desc');
+      let order = paging.getSortQuery();
+      order = order.map((o) => o.join(' '))
+        .join(', ');
+      expect(order).to.equal('publishedAt desc, id desc');
     });
   });
 });
