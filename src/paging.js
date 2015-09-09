@@ -33,7 +33,7 @@ export default class Paging {
     if (!this.opt.data.list.length) return this.opt.data;
 
     if (!this.searchProvider.isForwardPagging) this.opt.data.list.reverse();
-    console.log(this.opt);
+
     datePaged(this.opt);
 
     return this.opt.data;
