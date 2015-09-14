@@ -35,5 +35,8 @@
     "eslint": "^1.2.1",
     "eslint-config-airbnb": "0.0.8",
     "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "qs": "^5.1.0"
   }
 }

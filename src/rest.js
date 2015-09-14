@@ -1,4 +1,4 @@
-import qs from 'querystring';
+import qs from 'qs';
 import { DIRECTION } from './search-providers/search-provider';
 
 
@@ -7,7 +7,6 @@ export function datePaged(opt) {
   const hasNext = existsNextLink(opt);
 
   removeRemainingItem(opt, hasPrev);
-
   if (hasPrev) buildLink(opt, DIRECTION.BACKWARD);
   if (hasNext) buildLink(opt, DIRECTION.FORWARD);
 }
