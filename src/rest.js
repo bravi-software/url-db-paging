@@ -16,6 +16,10 @@ export function datePaged(opt) {
     buildLink(opt, DIRECTION.FORWARD);
   }
 
+  if (!opt.data._links) {
+    opt.data._links = {};
+  }
+
   opt.data._links.self = { href: opt.root };
 
   if (opt.query) {

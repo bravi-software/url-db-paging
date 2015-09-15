@@ -55,5 +55,45 @@ describe('Paging .addSelfLink', function() {
 
     expect(obj.data._links).to.have.property('self');
     expect(obj.data._links.self.href).to.be.equal('/questions?limit=1&query%5BtermId%5D=1');
+
+    const pageData = {
+      data: {
+        list: [
+          {
+            id: 2,
+            name: 'question',
+            updatedAt: '2015-09-14T19:32:19.740Z',
+          },
+          {
+            id: 3,
+            name: 'question 2',
+            updatedAt: '2015-09-14T19:32:19.740Z',
+          },
+        ],
+      },
+      defaultSortField: {
+        column: '-q.updatedAt',
+        json: 'updatedAt',
+      },
+      idField: {
+        column: 'q.id',
+        json: 'id',
+      },
+      limit: 10,
+      query: {
+        limit: 10,
+        query: {
+          termId: 1,
+        },
+      },
+      queryBuilderType: 'knex',
+      root: '/questions',
+      sortFieldName: 'updatedAt',
+    };
+
+    restUtils.datePaged(pageData);
+
+    expect(pageData.data._links).to.have.property('self');
+    expect(pageData.data._links.self.href).to.be.equal('/questions?limit=10&query%5BtermId%5D=1');
   });
 });
