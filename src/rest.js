@@ -7,8 +7,20 @@ export function datePaged(opt) {
   const hasNext = existsNextLink(opt);
 
   removeRemainingItem(opt, hasPrev);
-  if (hasPrev) buildLink(opt, DIRECTION.BACKWARD);
-  if (hasNext) buildLink(opt, DIRECTION.FORWARD);
+
+  if (hasPrev) {
+    buildLink(opt, DIRECTION.BACKWARD);
+  }
+
+  if (hasNext) {
+    buildLink(opt, DIRECTION.FORWARD);
+  }
+
+  opt.data._links.self = { href: opt.root };
+
+  if (opt.query) {
+    opt.data._links.self.href += '?' + qs.stringify(opt.query);
+  }
 }
 
 function removeRemainingItem(opt, hasPrev) {
@@ -57,7 +69,13 @@ function buildLink(opt, direction) {
 export function addSelfLink(data, id, root) {
   data._links = data._links || {};
 
-  data._links.self = { href: root + '/' + data[id] };
+  let href = root;
+
+  if (data[id]) {
+    href += `/${data[id]}`;
+  }
+
+  data._links.self = { href };
 }
 
 function getPropertyValue(propName, item) {

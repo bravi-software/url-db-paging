@@ -12,7 +12,7 @@ describe('Paging .addSelfLink', function() {
     expect(item).to.have.property('_links');
   });
 
-  it('should build link', function() {
+  it('should build links', function() {
     const obj = {
       data: {
         list: [
@@ -49,7 +49,11 @@ describe('Paging .addSelfLink', function() {
     };
 
     restUtils.datePaged(obj);
+
     const test = /query\%5BtermId\%5D=1/.test(obj.data._links.next.href);
     expect(test).to.be.equal(true);
+
+    expect(obj.data._links).to.have.property('self');
+    expect(obj.data._links.self.href).to.be.equal('/questions?limit=1&query%5BtermId%5D=1');
   });
 });
