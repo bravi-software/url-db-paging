@@ -13,10 +13,6 @@ export default class Paging {
 
     this.searchProvider = new SearchProvider(opt);
     this.opt.sortFieldName = this.searchProvider.sortFieldName;
-
-    if (opt.defaultSortField && opt.defaultSortField.json) {
-      this.opt.sortFieldName = opt.defaultSortField.json;
-    }
   }
 
 
