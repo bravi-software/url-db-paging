@@ -8,12 +8,13 @@ export const DIRECTION = {
 export default class SearchProvider {
   constructor(opt) {
     this.query = opt.query;
+
     this.sortField = opt.query.sort || opt.defaultSortField;
-    this.sortFieldName = this.sortField.column || this.sortField;
-    this.isSortDesc = /^-/.test(this.sortFieldName);
+    this.sortFieldName = this.sortField.json || this.sortField;
+    this.isSortDesc = /^-/.test(this.sortField.column || this.sortFieldName);
     this.isForwardPagging = opt.query.dir !== DIRECTION.BACKWARD;
-    this.isAscQuerySort = (!this.isSortDesc && this.isForwardPagging) || (this.isSortDesc && !this.isForwardPagging);
-    this.sortFieldColumn = this.sortFieldName.replace(/^-/, '');
+    this.isAscQuerySort = (!this.isSortDesc && this.isForwardPagging) || this.isSortDesc && !this.isForwardPagging;
+    this.sortFieldColumn = (this.sortField.column || this.sortFieldName).replace(/^-/, '');
     this.offsetPrimaryField = getOffsetValue(this.query);
     this.idField = opt.idField;
     this.idFieldColumn = opt.idField.column || opt.idField;
