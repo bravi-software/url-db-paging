@@ -54,7 +54,7 @@ function buildLink(opt, direction) {
 
   if (!opt.data._links) opt.data._links = {};
 
-  const offset = getPropertyValue(opt.sortFieldName, item);
+  const offset = getPropertyValue(opt.sortFieldName.replace(/^-/, ''), item);
 
   if (offset) {
     if (isDate(offset)) q.offset_date = offset.toISOString();
