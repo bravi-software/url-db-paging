@@ -27,11 +27,17 @@ export default class KnexSearchProvider extends SearchProvider {
     }
 
     knex
-      .where(this.sortFieldColumn, operator, this.offsetPrimaryField)
-      .where(this.idFieldColumn, '<>', this.query.offset_id)
-      .orWhere((query) => {
-        query.where(this.sortFieldColumn, this.offsetPrimaryField);
-        query.where(this.idFieldColumn, operator, this.query.offset_id);
+      .where((query) => {
+        query
+          .where((andWhere) => {
+            andWhere.where(this.sortFieldColumn, operator,
+              this.offsetPrimaryField);
+            andWhere.where(this.idFieldColumn, '<>', this.query.offset_id);
+          })
+          .orWhere((orQuery) => {
+            orQuery.where(this.sortFieldColumn, this.offsetPrimaryField);
+            orQuery.where(this.idFieldColumn, operator, this.query.offset_id);
+          });
       });
   }
 }
