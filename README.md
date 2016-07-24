@@ -44,19 +44,24 @@ app.get('/', function(req, res, next){
   var paging = new Paging({
     query: req.query,               // query string
     defaultSortField: '-created',   // default sort field
-    defaultSortField: {column: '-created', json: 'createdAt'}, // define the column to sort and the JSON value of createdAt
-    idField: '_id',                 // data's id field
-    idField: {column: '_id', json: 'id'}, // define the id column in database and
+    idField: '_id',                 // data id field
     root: 'http://service/users',   // base url
     limit: limit,                   // limit per page
     queryBuilderType: 'mongoose'    // query builder type
   });
 
-  //OR: When your JSON data it's different than the column/property in yours database you can define those changes like:
+  // OR: When your JSON data it's different than the column/property
+  // in yours database you can define those changes like:
   var paging = new Paging({
     query: req.query,               // query string
-    defaultSortField: {column: '-created', json: 'createdAt'} // define the column to sort and the JSON value of createdAt
-    idField: {column: '_id', json: 'id'} // define the id column in database and
+    defaultSortField: {             // default sort field:
+      column: '-created',           // - column used in DB query
+      json: 'createdAt'             // - field exposed in the json result
+    },
+    idField: {                      // data id field:
+      column: '_id',                // - column used in DB query
+      json: 'id'                    // - field exposed in the json result
+    },
     root: 'http://service/users',   // base url
     limit: limit,                   // limit per page
     queryBuilderType: 'mongoose'    // query builder type
